@@ -1,3 +1,251 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-cream: #F5F0E8;
+  --color-charcoal: #1A1A1A;
+  --color-rust: #C4715B;
+  --color-sage: #8B9A7D;
+  --color-ochre: #D4A853;
+  --color-stone: #9C958C;
+
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+
+  --space-unit: clamp(1rem, 2vw, 2rem);
+  --container-offset: clamp(1rem, 5vw, 8rem);
+}
+
+* {
+  cursor: none;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom cursor */
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-charcoal);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cursor-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--color-charcoal);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.cursor-hover {
+  transform: scale(2.5);
+  background: var(--color-rust);
+  border-color: var(--color-rust);
+  mix-blend-mode: normal;
+}
+
+/* Typography */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.text-fluid-xs {
+  font-size: clamp(0.75rem, 1vw, 0.875rem);
+}
+
+.text-fluid-sm {
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+}
+
+.text-fluid-base {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+.text-fluid-lg {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.text-fluid-xl {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.text-fluid-2xl {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.text-fluid-3xl {
+  font-size: clamp(2.5rem, 7vw, 6rem);
+}
+
+.text-fluid-display {
+  font-size: clamp(3rem, 12vw, 14rem);
+}
+
+/* Layout utilities */
+.offset-left {
+  margin-left: var(--container-offset);
+}
+
+.offset-right {
+  margin-right: var(--container-offset);
+}
+
+.overflow-visible-clip {
+  overflow: clip;
+  overflow-clip-margin: 50px;
+}
+
+/* Split text animation ready states */
+.split-text .word,
+.split-text .char {
+  display: inline-block;
+}
+
+.reveal-text .char {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.reveal-text.active .char {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Image treatments */
+.image-mask {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.image-reveal {
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+}
+
+.image-reveal.active {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Grain overlay */
+.grain::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 1000;
+}
+
+/* Marquee */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+}
+
+.marquee-content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+/* Horizontal scroll section */
+.horizontal-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/* Section offsets for broken grid */
+.section-offset-1 { padding-left: 5%; padding-right: 15%; }
+.section-offset-2 { padding-left: 15%; padding-right: 5%; }
+.section-offset-3 { padding-left: 0; padding-right: 20%; }
+
+/* Scrollbar hidden */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-rust);
+  color: var(--color-cream);
+}
+
+/* Links */
+a {
+  cursor: none;
+}
+
+button {
+  cursor: none;
+}
+
+/* Debug grid - remove in production */
+.debug-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,0,0,0.1) 1px, transparent 1px);
+  background-size: 10% 100px;
+}
