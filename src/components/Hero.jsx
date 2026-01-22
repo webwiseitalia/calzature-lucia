@@ -2,166 +2,127 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
-import heroImage from '../assets/foto/foto-5.webp'
-import foto10 from '../assets/foto/foto-10.webp'
-import foto9 from '../assets/foto/foto-9.webp'
+import foto1 from '../assets/new foto/new foto-1.webp'
+import foto2 from '../assets/new foto/new foto-2.webp'
+import foto3 from '../assets/new foto/new foto-3.png'
+import foto4 from '../assets/new foto/new foto-4.webp'
+import foto5 from '../assets/new foto/new foto-5.webp'
+import foto6 from '../assets/new foto/new foto-6.png'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const gridImages = [
+  { src: foto1, delay: 0 },
+  { src: foto2, delay: 0.1 },
+  { src: foto3, delay: 0.2 },
+  { src: foto4, delay: 0.15 },
+  { src: foto5, delay: 0.25 },
+  { src: foto6, delay: 0.05 },
+]
 
 export default function Hero() {
   const sectionRef = useRef(null)
   const titleRef = useRef(null)
   const subtitleRef = useRef(null)
-  const imageRef = useRef(null)
-  const image2Ref = useRef(null)
-  const image3Ref = useRef(null)
-  const yearRef = useRef(null)
-  const marqueeRef = useRef(null)
+  const gridRef = useRef(null)
+  const ctaRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Split the title text
-      const titleSplit = new SplitType(titleRef.current, { types: 'chars, words' })
-      const subtitleSplit = new SplitType(subtitleRef.current, { types: 'lines' })
+      // Grid images - staggered mosaic reveal
+      const gridItems = gridRef.current.querySelectorAll('.grid-item')
 
-      // Title animation - cinematic reveal
-      gsap.fromTo(titleSplit.chars,
-        {
-          y: 120,
-          opacity: 0,
-          rotateX: -90
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotateX: 0,
-          duration: 1.4,
-          ease: 'power4.out',
-          stagger: {
-            amount: 0.8,
-            from: 'start'
+      gridItems.forEach((item, i) => {
+        const img = item.querySelector('img')
+        const overlay = item.querySelector('.overlay')
+
+        // Random starting positions for mosaic effect
+        const randomX = (Math.random() - 0.5) * 100
+        const randomY = (Math.random() - 0.5) * 100
+        const randomRotate = (Math.random() - 0.5) * 15
+
+        gsap.fromTo(item,
+          {
+            opacity: 0,
+            scale: 0.8,
+            x: randomX,
+            y: randomY,
+            rotate: randomRotate
           },
-          delay: 0.3
-        }
-      )
+          {
+            opacity: 1,
+            scale: 1,
+            x: 0,
+            y: 0,
+            rotate: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            delay: 0.2 + (i * 0.12)
+          }
+        )
 
-      // Subtitle lines animation
-      gsap.fromTo(subtitleSplit.lines,
-        { y: 60, opacity: 0 },
+        // Overlay wipe
+        gsap.fromTo(overlay,
+          { scaleY: 1 },
+          {
+            scaleY: 0,
+            duration: 0.8,
+            ease: 'power2.inOut',
+            delay: 0.5 + (i * 0.12)
+          }
+        )
+
+        // Parallax on scroll for each image
+        gsap.to(img, {
+          y: -30 - (i * 10),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1 + (i * 0.2)
+          }
+        })
+      })
+
+      // Title animation
+      const titleSplit = new SplitType(titleRef.current, { types: 'chars, words' })
+
+      gsap.fromTo(titleSplit.chars,
+        { y: 100, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 1,
-          ease: 'power3.out',
-          stagger: 0.15,
-          delay: 1.2
-        }
-      )
-
-      // Year counter animation
-      gsap.fromTo(yearRef.current,
-        { opacity: 0, scale: 0.5 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1.5,
-          ease: 'elastic.out(1, 0.5)',
+          ease: 'power4.out',
+          stagger: { amount: 0.6, from: 'start' },
           delay: 0.8
         }
       )
 
-      // Main image - asymmetric reveal
-      gsap.fromTo(imageRef.current,
-        {
-          clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
-          scale: 1.3
-        },
-        {
-          clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
-          scale: 1,
-          duration: 1.8,
-          ease: 'power4.inOut',
-          delay: 0.5
-        }
+      // Subtitle
+      gsap.fromTo(subtitleRef.current,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.4 }
       )
 
-      // Secondary image - offset timing
-      gsap.fromTo(image2Ref.current,
-        {
-          clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)',
-          x: 100
-        },
-        {
-          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-          x: 0,
-          duration: 1.6,
-          ease: 'power3.inOut',
-          delay: 1.2
-        }
+      // CTA
+      gsap.fromTo(ctaRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 1.6 }
       )
 
-      // Third image - different reveal
-      gsap.fromTo(image3Ref.current,
-        {
-          y: 100,
-          opacity: 0,
-          rotate: 5
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotate: -3,
-          duration: 1.4,
-          ease: 'power3.out',
-          delay: 1.6
-        }
-      )
+      // Hover effects for grid items
+      gridItems.forEach((item) => {
+        const img = item.querySelector('img')
 
-      // Parallax on scroll
-      gsap.to(imageRef.current, {
-        y: -100,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.5
-        }
-      })
+        item.addEventListener('mouseenter', () => {
+          gsap.to(img, { scale: 1.1, duration: 0.6, ease: 'power2.out' })
+        })
 
-      gsap.to(image2Ref.current, {
-        y: -60,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 2
-        }
-      })
-
-      gsap.to(image3Ref.current, {
-        y: -150,
-        rotate: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1
-        }
-      })
-
-      // Marquee scroll speed control
-      gsap.to(marqueeRef.current, {
-        x: '-50%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.5
-        }
+        item.addEventListener('mouseleave', () => {
+          gsap.to(img, { scale: 1, duration: 0.6, ease: 'power2.out' })
+        })
       })
 
     }, sectionRef)
@@ -173,131 +134,111 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="relative min-h-[120vh] md:min-h-[150vh] overflow-hidden bg-[#F5F0E8]"
+      className="relative min-h-screen overflow-hidden bg-[#1A1A1A]"
     >
-      {/* Year - absolute positioned, breaking the grid */}
+      {/* Photo Grid - Full screen mosaic */}
       <div
-        ref={yearRef}
-        className="absolute top-[15vh] right-[5vw] md:right-[8vw] z-10"
+        ref={gridRef}
+        className="absolute inset-0 grid grid-cols-3 md:grid-cols-6 grid-rows-2 gap-1 md:gap-2 p-1 md:p-2"
       >
-        <span className="text-fluid-display font-serif text-[#C4715B]/20 leading-none">
-          1967
-        </span>
+        {gridImages.map((image, index) => {
+          // Different aspect ratios and spans for visual interest
+          const spans = [
+            'col-span-1 row-span-1 md:col-span-2 md:row-span-2',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-1',
+            'col-span-1 row-span-2 md:col-span-1 md:row-span-2',
+            'col-span-2 row-span-1 md:col-span-2 md:row-span-1',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-1',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-1',
+          ]
+
+          return (
+            <div
+              key={index}
+              className={`grid-item relative overflow-hidden cursor-pointer ${spans[index]}`}
+            >
+              <img
+                src={image.src}
+                alt={`Calzature ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {/* Reveal overlay */}
+              <div className="overlay absolute inset-0 bg-[#1A1A1A] origin-top" />
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-[#C4715B]/0 hover:bg-[#C4715B]/20 transition-colors duration-500" />
+            </div>
+          )
+        })}
       </div>
 
-      {/* Main content - asymmetric layout */}
-      <div className="relative pt-[20vh] md:pt-[25vh] px-6 md:px-0">
-        {/* Title - left aligned, breaking container */}
-        <div className="md:ml-[8vw] max-w-[90vw] md:max-w-[55vw]">
+      {/* Dark gradient overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/60 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/80 via-transparent to-transparent pointer-events-none" />
+
+      {/* Content overlay */}
+      <div className="relative z-10 min-h-screen flex flex-col justify-end pb-20 md:pb-32 px-6 md:px-[8vw]">
+        {/* Main title */}
+        <div className="max-w-4xl">
           <h1
             ref={titleRef}
-            className="text-fluid-3xl md:text-fluid-display font-serif text-[#1A1A1A] leading-[0.9] tracking-tight"
-            style={{ perspective: '1000px' }}
+            className="text-[12vw] md:text-[8vw] font-serif text-[#F5F0E8] leading-[0.9] tracking-tight"
           >
             Le scarpe
             <br />
             <span className="italic text-[#C4715B]">perfette</span>
-            <br />
-            per te
+            <span className="text-[#F5F0E8]"> per te</span>
           </h1>
         </div>
 
-        {/* Subtitle - offset right */}
-        <div className="mt-12 md:mt-16 md:ml-[35vw] max-w-[400px] px-6 md:px-0">
+        {/* Subtitle and CTA row */}
+        <div className="mt-8 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <p
             ref={subtitleRef}
-            className="text-fluid-base text-[#9C958C] leading-relaxed"
+            className="text-fluid-base text-[#9C958C] leading-relaxed max-w-md"
           >
-            Da oltre 57 anni nel cuore di Bienno,
-            uno dei Borghi più Belli d'Italia.
+            Da oltre 57 anni nel cuore di Bienno, uno dei Borghi più Belli d'Italia.
             Calzature e accessori con la passione di sempre.
           </p>
-        </div>
 
-        {/* CTA - further offset */}
-        <div className="mt-10 md:ml-[35vw]">
-          <a
-            href="#collezioni"
-            className="group inline-flex items-center gap-4"
-          >
-            <span className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#1A1A1A] flex items-center justify-center group-hover:bg-[#1A1A1A] transition-all duration-500">
+          <div ref={ctaRef} className="flex items-center gap-8">
+            {/* Stats */}
+            <div className="hidden md:flex items-center gap-8">
+              <div className="text-right">
+                <div className="text-fluid-xl font-serif text-[#F5F0E8]">57</div>
+                <div className="text-fluid-xs uppercase tracking-widest text-[#9C958C]">Anni</div>
+              </div>
+              <div className="w-px h-12 bg-[#F5F0E8]/20" />
+              <div className="text-right">
+                <div className="text-fluid-xl font-serif text-[#F5F0E8]">5K+</div>
+                <div className="text-fluid-xs uppercase tracking-widest text-[#9C958C]">Followers</div>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <a
+              href="#collezioni"
+              className="group flex items-center gap-4 bg-[#C4715B] hover:bg-[#F5F0E8] text-[#F5F0E8] hover:text-[#1A1A1A] px-6 py-4 transition-all duration-500"
+            >
+              <span className="text-fluid-sm font-medium uppercase tracking-wider">
+                Scopri
+              </span>
               <svg
-                className="w-6 h-6 text-[#1A1A1A] group-hover:text-[#F5F0E8] transition-colors duration-500 group-hover:translate-x-1"
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </span>
-            <span className="text-fluid-sm font-medium text-[#1A1A1A] tracking-wide uppercase">
-              Scopri le collezioni
-            </span>
-          </a>
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Images - broken grid, overlapping */}
-      <div className="absolute top-[30vh] right-0 w-[45vw] md:w-[35vw] aspect-[3/4]">
-        <div ref={imageRef} className="w-full h-full overflow-hidden">
-          <img
-            src={heroImage}
-            alt="Sneakers eleganti nel borgo di Bienno"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Second image - overlapping the first */}
-      <div className="absolute top-[55vh] md:top-[50vh] right-[25vw] md:right-[30vw] w-[40vw] md:w-[25vw] aspect-[4/5] z-20">
-        <div ref={image2Ref} className="w-full h-full overflow-hidden">
-          <img
-            src={foto10}
-            alt="Sneakers urbane"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Third image - bottom left, rotated */}
-      <div
-        ref={image3Ref}
-        className="absolute bottom-[15vh] left-[5vw] w-[35vw] md:w-[20vw] aspect-square z-10"
-      >
-        <img
-          src={foto9}
-          alt="Scarponcini artigianali"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Stats - scattered, not grid */}
-      <div className="absolute bottom-[25vh] md:bottom-[20vh] right-[10vw] text-right">
-        <div className="text-fluid-2xl font-serif text-[#1A1A1A]">57</div>
-        <div className="text-fluid-xs uppercase tracking-widest text-[#9C958C]">Anni</div>
-      </div>
-
-      <div className="absolute bottom-[35vh] md:bottom-[35vh] right-[25vw] md:right-[18vw] text-right">
-        <div className="text-fluid-2xl font-serif text-[#1A1A1A]">5K+</div>
-        <div className="text-fluid-xs uppercase tracking-widest text-[#9C958C]">Followers</div>
-      </div>
-
-      {/* Marquee at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 py-6 border-t border-[#1A1A1A]/10 overflow-hidden">
-        <div ref={marqueeRef} className="flex whitespace-nowrap">
-          {[...Array(4)].map((_, i) => (
-            <span key={i} className="flex items-center gap-8 px-8 text-fluid-sm text-[#9C958C]">
-              <span>Bienno</span>
-              <span className="w-2 h-2 rounded-full bg-[#C4715B]" />
-              <span>Valle Camonica</span>
-              <span className="w-2 h-2 rounded-full bg-[#C4715B]" />
-              <span>Dal 1967</span>
-              <span className="w-2 h-2 rounded-full bg-[#C4715B]" />
-              <span>Borgo più Bello d'Italia</span>
-              <span className="w-2 h-2 rounded-full bg-[#C4715B]" />
-            </span>
-          ))}
-        </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[#9C958C]">
+        <span className="text-fluid-xs uppercase tracking-widest">Scroll</span>
+        <div className="w-px h-12 bg-gradient-to-b from-[#C4715B] to-transparent animate-pulse" />
       </div>
     </section>
   )

@@ -44,9 +44,7 @@ export default function Header() {
             <img
               src={logo}
               alt="Calzature Lucia"
-              className={`h-8 md:h-10 w-auto transition-all duration-500 ${
-                scrolled || menuOpen ? 'invert' : ''
-              }`}
+              className="h-8 md:h-10 w-auto"
             />
           </a>
 
@@ -55,9 +53,7 @@ export default function Header() {
               <a
                 key={item.name}
                 href={item.href}
-                className={`text-fluid-sm font-medium tracking-wide transition-colors duration-300 ${
-                  scrolled ? 'text-white' : 'text-[#1A1A1A]'
-                } hover:text-[#C4715B]`}
+                className="text-fluid-sm font-medium tracking-wide transition-colors duration-300 text-[#F5F0E8] hover:text-[#C4715B]"
                 style={{ transitionDelay: `${i * 50}ms` }}
               >
                 {item.name}
@@ -70,11 +66,7 @@ export default function Header() {
               href="https://wa.me/393355358621"
               target="_blank"
               rel="noopener noreferrer"
-              className={`hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all duration-300 ${
-                scrolled
-                  ? 'border-white text-white hover:bg-white hover:text-[#1A1A1A]'
-                  : 'border-[#1A1A1A] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
-              }`}
+              className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#F5F0E8] text-[#F5F0E8] hover:bg-[#F5F0E8] hover:text-[#1A1A1A] transition-all duration-300"
             >
               <span className="text-fluid-sm font-medium">WhatsApp</span>
             </a>
@@ -85,15 +77,15 @@ export default function Header() {
             >
               <motion.span
                 animate={menuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
-                className={`w-6 h-0.5 ${menuOpen ? 'bg-white' : 'bg-[#1A1A1A]'} transition-colors`}
+                className={`w-6 h-0.5 transition-colors ${menuOpen ? 'bg-white' : 'bg-[#F5F0E8]'}`}
               />
               <motion.span
                 animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                className={`w-6 h-0.5 ${menuOpen ? 'bg-white' : 'bg-[#1A1A1A]'} transition-colors`}
+                className={`w-6 h-0.5 transition-colors ${menuOpen ? 'bg-white' : 'bg-[#F5F0E8]'}`}
               />
               <motion.span
                 animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                className={`w-6 h-0.5 ${menuOpen ? 'bg-white' : 'bg-[#1A1A1A]'} transition-colors`}
+                className={`w-6 h-0.5 transition-colors ${menuOpen ? 'bg-white' : 'bg-[#F5F0E8]'}`}
               />
             </button>
           </div>

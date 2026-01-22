@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
-import foto8 from '../assets/foto/foto-8.webp'
+import foto8 from '../assets/new foto/new foto-8.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 

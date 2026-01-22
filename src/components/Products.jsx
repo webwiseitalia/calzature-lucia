@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import foto2 from '../assets/foto/foto-2.webp'
-import foto3 from '../assets/foto/foto-3.webp'
-import foto6 from '../assets/foto/foto-6.webp'
-import foto7 from '../assets/foto/foto-7.webp'
-import foto11 from '../assets/foto/foto-11.webp'
-import foto13 from '../assets/foto/foto-13.webp'
-import foto14 from '../assets/foto/foto-14.webp'
-import foto16 from '../assets/foto/foto-16.webp'
-import foto17 from '../assets/foto/foto-17.webp'
+import foto2 from '../assets/new foto/new foto-2.webp'
+import foto3 from '../assets/new foto/new foto-3.png'
+import foto6 from '../assets/new foto/new foto-6.png'
+import foto7 from '../assets/new foto/new foto-7.webp'
+import foto11 from '../assets/new foto/new foto-11.webp'
+import foto13 from '../assets/new foto/new foto-13.png'
+import foto14 from '../assets/new foto/new foto-14.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -21,8 +19,6 @@ const products = [
   { image: foto11, name: 'Trekking' },
   { image: foto13, name: 'Polacchini' },
   { image: foto14, name: 'Trail' },
-  { image: foto16, name: 'Tronchetti' },
-  { image: foto17, name: 'Tacchi' },
 ]
 
 export default function Products() {

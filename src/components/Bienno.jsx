@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
-import foto5 from '../assets/foto/foto-5.webp'
+import foto5 from '../assets/new foto/new foto-5.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -11,7 +11,6 @@ export default function Bienno() {
   const titleRef = useRef(null)
   const imageRef = useRef(null)
   const textRef = useRef(null)
-  const badgeRefs = useRef([])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -65,29 +64,6 @@ export default function Bienno() {
           }
         }
       )
-
-      // Badges scattered animation
-      badgeRefs.current.forEach((badge, i) => {
-        const delays = [0.2, 0.5, 0.3, 0.6]
-        const rotations = [-8, 5, -3, 7]
-
-        gsap.fromTo(badge,
-          { scale: 0, opacity: 0, rotate: rotations[i] * 2 },
-          {
-            scale: 1,
-            opacity: 1,
-            rotate: rotations[i],
-            duration: 0.8,
-            ease: 'back.out(2)',
-            delay: delays[i],
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse'
-            }
-          }
-        )
-      })
 
     }, sectionRef)
 
@@ -145,35 +121,6 @@ export default function Bienno() {
             <strong className="text-[#F5F0E8]"> Calzature Lucia </strong>
             si trova in Via Fantoni 54, nel centro storico.
           </p>
-        </div>
-
-        {/* Floating badges - scattered positions */}
-        <div
-          ref={el => badgeRefs.current[0] = el}
-          className="absolute top-[15%] right-[8%] bg-[#D4A853] text-[#1A1A1A] px-4 py-2 text-fluid-xs font-medium"
-        >
-          Borghi più Belli d'Italia
-        </div>
-
-        <div
-          ref={el => badgeRefs.current[1] = el}
-          className="absolute top-[35%] right-[15%] bg-[#F5F0E8] text-[#1A1A1A] px-4 py-2 text-fluid-xs font-medium"
-        >
-          Bandiera Arancione TCI
-        </div>
-
-        <div
-          ref={el => badgeRefs.current[2] = el}
-          className="absolute bottom-[30%] left-[8%] bg-[#C4715B] text-[#F5F0E8] px-4 py-2 text-fluid-xs font-medium hidden md:block"
-        >
-          Valle Camonica
-        </div>
-
-        <div
-          ref={el => badgeRefs.current[3] = el}
-          className="absolute bottom-[15%] right-[25%] border border-[#F5F0E8]/30 text-[#F5F0E8] px-4 py-2 text-fluid-xs"
-        >
-          Borgo degli Artisti
         </div>
 
         {/* Bottom info - asymmetric */}

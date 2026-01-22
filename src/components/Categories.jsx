@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitType from 'split-type'
-import foto1 from '../assets/foto/foto-1.webp'
-import foto12 from '../assets/foto/foto-12.webp'
-import foto4 from '../assets/foto/foto-4.webp'
-import foto15 from '../assets/foto/foto-15.webp'
+import foto1 from '../assets/new foto/new foto-1.webp'
+import foto12 from '../assets/new foto/new foto-12.webp'
+import foto4 from '../assets/new foto/new foto-4.webp'
+import foto15 from '../assets/new foto/new foto-15.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
